@@ -199,7 +199,7 @@ variable "kubernetes_version" {
 
 variable "default_node_pool_vm_size" {
   description = "Specifies the vm size of the default node pool"
-  default     = "Standard_D2_v5"
+  default     = "standard_d2as_v5"
   type        = string
 }
 
@@ -309,7 +309,7 @@ variable "additional_node_pool_name" {
 variable "additional_node_pool_vm_size" {
   description = "(Required) The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
   type        = string
-  default     = "Standard_D2_v5"
+  default     = "standard_d2as_v5"
 }
 
 variable "additional_node_pool_availability_zones" {
@@ -461,7 +461,7 @@ variable "vm_public_ip" {
 
 variable "vm_size" {
   description = "Specifies the size of the jumpbox virtual machine"
-  default     = "Standard_D2_v5"
+  default     = "standard_d2as_v5"
   type        = string
 }
 
@@ -512,7 +512,7 @@ variable "storage_account_tier" {
 variable "acr_name" {
   description = "Specifies the name of the container registry"
   type        = string
-  default     = "acrpelithneprivate2"
+  default     = "acrpelithneprivate222"
 }
 
 variable "acr_sku" {
@@ -571,7 +571,7 @@ variable "storage_account_replication_type" {
 variable "key_vault_name" {
   description = "Specifies the name of the key vault."
   type        = string
-  default     = "kvalipelithne22"
+  default     = "kvalipelithne222"
 }
 
 variable "key_vault_sku_name" {
