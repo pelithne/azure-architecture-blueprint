@@ -199,7 +199,7 @@ variable "kubernetes_version" {
 
 variable "default_node_pool_vm_size" {
   description = "Specifies the vm size of the default node pool"
-  default     = "Standard_D2s_v3"
+  default     = "Standard_D2_v5"
   type        = string
 }
 
@@ -309,7 +309,7 @@ variable "additional_node_pool_name" {
 variable "additional_node_pool_vm_size" {
   description = "(Required) The SKU which should be used for the Virtual Machines used in this Node Pool. Changing this forces a new resource to be created."
   type        = string
-  default     = "Standard_D2s_v3"
+  default     = "Standard_D2_v5"
 }
 
 variable "additional_node_pool_availability_zones" {
@@ -461,7 +461,7 @@ variable "vm_public_ip" {
 
 variable "vm_size" {
   description = "Specifies the size of the jumpbox virtual machine"
-  default     = "Standard_DS1_v2"
+  default     = "Standard_D2_v5"
   type        = string
 }
 
