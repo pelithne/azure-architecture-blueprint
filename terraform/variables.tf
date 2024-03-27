@@ -512,7 +512,7 @@ variable "storage_account_tier" {
 variable "acr_name" {
   description = "Specifies the name of the container registry"
   type        = string
-  default     = "acrpelithneprivate"
+  default     = "acrpelithneprivate2"
 }
 
 variable "acr_sku" {
@@ -571,7 +571,7 @@ variable "storage_account_replication_type" {
 variable "key_vault_name" {
   description = "Specifies the name of the key vault."
   type        = string
-  default     = "kvalipelithne2"
+  default     = "kvalipelithne22"
 }
 
 variable "key_vault_sku_name" {
