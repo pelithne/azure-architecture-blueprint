@@ -34,7 +34,7 @@ resource "azurerm_resource_group" "hub_rg" {
 
 resource "azurerm_resource_group" "spoke_rg" {
   name     = var.spoke_resource_group_name
-  location = var.location
+  location = var.spoke_location
   tags     = var.tags
 }
 
@@ -82,7 +82,7 @@ module "hub_network" {
 module "aks_network" {
   source                       = "./modules/virtual_network_spoke"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
-  location                     = var.location
+  location                     = var.spoke_location
   vnet_name                    = var.aks_vnet_name
   address_space                = var.aks_vnet_address_space
   log_analytics_workspace_id   = module.log_analytics_workspace.id
@@ -153,7 +153,7 @@ module "firewall" {
 module "routetable" {
   source               = "./modules/route_table"
   resource_group_name  = azurerm_resource_group.spoke_rg.name
-  location             = var.location
+  location             = var.spoke_location
   route_table_name     = local.route_table_name
   route_name           = local.route_name
   firewall_private_ip  = module.firewall.private_ip_address
@@ -185,7 +185,7 @@ module "container_registry" {
 module "aks_cluster" {
   source                                   = "./modules/aks"
   name                                     = var.aks_cluster_name
-  location                                 = var.location
+  location                                 = var.spoke_location
   resource_group_name                      = azurerm_resource_group.spoke_rg.name
   resource_group_id                        = azurerm_resource_group.spoke_rg.id
   kubernetes_version                       = var.kubernetes_version
@@ -391,9 +391,9 @@ module "blob_private_dns_zone" {
 module "acr_private_endpoint" {
   source                         = "./modules/private_endpoint"
   name                           = "${module.container_registry.name}PrivateEndpoint"
-  location                       = var.location
+  location                       = var.spoke_location
   resource_group_name            = azurerm_resource_group.spoke_rg.name
-  subnet_id                      = module.hub_network.subnet_ids[var.vm_subnet_name]
+  subnet_id                      = module.aks_network.subnet_ids[var.pe_subnet_name]
   tags                           = var.tags
   private_connection_resource_id = module.container_registry.id
   is_manual_connection           = false
@@ -405,9 +405,9 @@ module "acr_private_endpoint" {
 module "key_vault_private_endpoint" {
   source                         = "./modules/private_endpoint"
   name                           = "${title(module.key_vault.name)}PrivateEndpoint"
-  location                       = var.location
+  location                       = var.spoke_location
   resource_group_name            = azurerm_resource_group.spoke_rg.name
-  subnet_id                      = module.hub_network.subnet_ids[var.vm_subnet_name]
+  subnet_id                      = module.aks_network.subnet_ids[var.pe_subnet_name]
   tags                           = var.tags
   private_connection_resource_id = module.key_vault.id
   is_manual_connection           = false
@@ -419,9 +419,9 @@ module "key_vault_private_endpoint" {
 module "blob_private_endpoint" {
   source                         = "./modules/private_endpoint"
   name                           = "${title(module.storage_account.name)}PrivateEndpoint"
-  location                       = var.location
+  location                       = var.spoke_location
   resource_group_name            = azurerm_resource_group.hub_rg.name
-  subnet_id                      = module.hub_network.subnet_ids[var.vm_subnet_name]
+  subnet_id                      = module.aks_network.subnet_ids[var.pe_subnet_name]
   tags                           = var.tags
   private_connection_resource_id = module.storage_account.id
   is_manual_connection           = false

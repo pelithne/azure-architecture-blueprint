@@ -27,6 +27,12 @@ variable "location" {
   type        = string
 }
 
+variable "spoke_location" {
+  description = "Specifies the location for the resource group and all the resources"
+  default     = "westus"
+  type        = string
+}
+
 variable "hub_resource_group_name" {
   description = "Specifies the hub resource group name"
   default     = "hub-rg"
