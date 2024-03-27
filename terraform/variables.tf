@@ -490,6 +490,12 @@ variable "bastion_host_name" {
   type        = string
 }
 
+variable "hub_bastion_subnet_address_prefix" {
+  description = "Specifies the address prefix of the firewall subnet"
+  default     = ["10.0.0.128/26"]
+  type        = list(string)
+}
+
 variable "storage_account_replication_type" {
   description = "(Optional) Specifies the replication type of the storage account"
   default     = "LRS"
@@ -670,3 +676,9 @@ variable "default_node_pool_node_taints" {
   type          = list(string)
   default       = []
 } 
+
+variable "private_cluster_enabled" {
+  description = "Define if cluster is private or public"
+  type        = bool
+  default     = true
+}

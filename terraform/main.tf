@@ -156,7 +156,7 @@ module "aks_cluster" {
   resource_group_id                        = azurerm_resource_group.spoke_rg.id
   kubernetes_version                       = var.kubernetes_version
   dns_prefix                               = lower(var.aks_cluster_name)
-  private_cluster_enabled                  = true
+  private_cluster_enabled                  = var.private_cluster_enabled
   automatic_channel_upgrade                = var.automatic_channel_upgrade
   sku_tier                                 = var.sku_tier
   default_node_pool_name                   = var.default_node_pool_name
