@@ -107,13 +107,6 @@ module "aks_network" {
       private_link_service_network_policies_enabled : false
     },
     {
-      name : var.appgw_subnet_name
-      address_prefixes : var.appgw_subnet_address_prefix
-      private_endpoint_network_policies_enabled : true
-      private_link_service_network_policies_enabled : false
-    },
-
-    {
       name : var.pe_subnet_name
       address_prefixes : var.pe_subnet_address_prefix
       private_endpoint_network_policies_enabled : true
@@ -435,11 +428,4 @@ module "blob_private_endpoint" {
   subresource_name               = "blob"
   private_dns_zone_group_name    = "BlobPrivateDnsZoneGroup"
   private_dns_zone_group_ids     = [module.blob_private_dns_zone.id]
-}
-
-module "application_gateway" {
-  source                       = "./modules/application_gateway"
-  resource_group_name          = azurerm_resource_group.spoke_rg.name
-  location                     = var.location
-  subnet_id                    = module.aks_network.subnet_ids[var.appgw_subnet_name]
 }
