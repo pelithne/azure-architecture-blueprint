@@ -17,7 +17,6 @@ terraform {
 }
 
 locals {
-  storage_account_prefix = "boot"
   route_table_name       = "DefaultRouteTable"
   route_name             = "RouteToAzureFirewall"
 }
@@ -254,15 +253,6 @@ resource "random_string" "storage_account_suffix" {
   numeric  = false
 }
 
-module "storage_account" {
-  source                      = "./modules/storage_account"
-  name                        = "${local.storage_account_prefix}${random_string.storage_account_suffix.result}"
-  location                    = var.location
-  resource_group_name         = azurerm_resource_group.spoke_rg.name
-  account_kind                = var.storage_account_kind
-  account_tier                = var.storage_account_tier
-  replication_type            = var.storage_account_replication_type
-}
 
 module "bastion_host" {
   source                       = "./modules/bastion_host"
@@ -285,15 +275,9 @@ module "virtual_machine" {
   domain_name_label                   = var.domain_name_label
   resource_group_name                 = azurerm_resource_group.hub_rg.name
   subnet_id                           = module.hub_network.subnet_ids[var.vm_subnet_name]
-  os_disk_storage_account_type        = var.vm_os_disk_storage_account_type
-  boot_diagnostics_storage_account    = module.storage_account.primary_blob_endpoint
   log_analytics_workspace_id          = module.log_analytics_workspace.workspace_id
   log_analytics_workspace_key         = module.log_analytics_workspace.primary_shared_key
   log_analytics_workspace_resource_id = module.log_analytics_workspace.id
-  //script_storage_account_name         = var.script_storage_account_name
-  //script_storage_account_key          = var.script_storage_account_key
-  //container_name                      = var.container_name
-  //script_name                         = var.script_name
 }
 
 module "node_pool" {
@@ -414,18 +398,4 @@ module "key_vault_private_endpoint" {
   subresource_name               = "vault"
   private_dns_zone_group_name    = "KeyVaultPrivateDnsZoneGroup"
   private_dns_zone_group_ids     = [module.key_vault_private_dns_zone.id]
-}
-
-module "blob_private_endpoint" {
-  source                         = "./modules/private_endpoint"
-  name                           = "${title(module.storage_account.name)}PrivateEndpoint"
-  location                       = var.spoke_location
-  resource_group_name            = azurerm_resource_group.hub_rg.name
-  subnet_id                      = module.aks_network.subnet_ids[var.pe_subnet_name]
-  tags                           = var.tags
-  private_connection_resource_id = module.storage_account.id
-  is_manual_connection           = false
-  subresource_name               = "blob"
-  private_dns_zone_group_name    = "BlobPrivateDnsZoneGroup"
-  private_dns_zone_group_ids     = [module.blob_private_dns_zone.id]
 }
