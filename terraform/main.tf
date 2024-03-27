@@ -26,8 +26,6 @@ terraform {
 
 locals {
   storage_account_prefix = "boot"
-  //route_table_name       = "DefaultRouteTable"
-  //route_name             = "RouteToAzureFirewall"
 }
 
 
@@ -64,12 +62,6 @@ module "hub_network" {
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 
   subnets = [
-//    {
-//      name : "AzureFirewallSubnet"
-//      address_prefixes : var.hub_firewall_subnet_address_prefix
-//      private_endpoint_network_policies_enabled : true
-//      private_link_service_network_policies_enabled : false
-//    },
     {
       name : "AzureBastionSubnet"
       address_prefixes : var.hub_bastion_subnet_address_prefix
@@ -144,44 +136,6 @@ module "vnet_peering" {
   depends_on          = [module.hub_network, module.aks_network]
 }
 
-/*
-module "firewall" {
-  source                       = "./modules/firewall"
-  name                         = var.firewall_name
-  resource_group_name          = azurerm_resource_group.hub_rg.name
-  zones                        = var.firewall_zones
-  threat_intel_mode            = var.firewall_threat_intel_mode
-  location                     = var.location
-  sku_name                     = var.firewall_sku_name 
-  sku_tier                     = var.firewall_sku_tier
-  pip_name                     = "${var.firewall_name}PublicIp"
-  subnet_id                    = module.hub_network.subnet_ids["AzureFirewallSubnet"]
-  log_analytics_workspace_id   = module.log_analytics_workspace.id
-}
-*/
-
-/*
-module "routetable" {
-  source               = "./modules/route_table"
-  resource_group_name  = azurerm_resource_group.spoke_rg.name
-  location             = var.location
-  route_table_name     = local.route_table_name
-  route_name           = local.route_name
-  firewall_private_ip  = module.firewall.private_ip_address
-  subnets_to_associate = {
-    (var.default_node_pool_subnet_name) = {
-      subscription_id      = data.azurerm_client_config.current.subscription_id
-      resource_group_name  = azurerm_resource_group.spoke_rg.name
-      virtual_network_name = module.aks_network.name
-    }
-    (var.additional_node_pool_subnet_name) = {
-      subscription_id      = data.azurerm_client_config.current.subscription_id
-      resource_group_name  = azurerm_resource_group.spoke_rg.name
-      virtual_network_name = module.aks_network.name
-    }
-  }
-}
-*/
 
 module "container_registry" {
   source                       = "./modules/container_registry"
@@ -300,10 +254,6 @@ module "virtual_machine" {
   log_analytics_workspace_id          = module.log_analytics_workspace.workspace_id
   log_analytics_workspace_key         = module.log_analytics_workspace.primary_shared_key
   log_analytics_workspace_resource_id = module.log_analytics_workspace.id
-  //script_storage_account_name         = var.script_storage_account_name
-  //script_storage_account_key          = var.script_storage_account_key
-  //container_name                      = var.container_name
-  //script_name                         = var.script_name
 }
 
 module "node_pool" {
