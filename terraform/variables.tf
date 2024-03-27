@@ -23,13 +23,13 @@ variable "solution_plan_map" {
 
 variable "location" {
   description = "Specifies the location for the resource group and all the resources"
-  default     = "eastus"
+  default     = "eastus2"
   type        = string
 }
 
 variable "spoke_location" {
   description = "Specifies the location for the resource group and all the resources"
-  default     = "westus"
+  default     = "westus2"
   type        = string
 }
 
