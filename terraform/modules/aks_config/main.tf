@@ -3,6 +3,10 @@ data "azurerm_kubernetes_cluster" "aks_cluster" {
   resource_group_name = var.resource_group_name
 }
 
+#provider "azurerm" {
+#  features {}
+#}
+
 provider "kubernetes" {
   host                   = data.azurerm_kubernetes_cluster.aks_cluster.kube_config.0.host
   client_certificate     = base64decode(data.azurerm_kubernetes_cluster.aks_cluster.kube_config.0.client_certificate)
@@ -16,7 +20,6 @@ resource "kubernetes_service" "aks_cluster" {
     annotations = {
       "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
       "service.beta.kubernetes.io/azure-load-balancer-internal-subnet" = "lb-subnet"
-      "service.beta.kubernetes.io/azure-pls-create" = "true"
     }
   }
   spec {
