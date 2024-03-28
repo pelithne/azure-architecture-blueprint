@@ -60,13 +60,7 @@ variable "automatic_channel_upgrade" {
 
 variable "sku_tier" {
   description = "(Optional) The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA). Defaults to Free."
-  default     = "Free"
   type        = string
-
-  validation {
-    condition = contains( ["Free", "Paid"], var.sku_tier)
-    error_message = "The sku tier is invalid."
-  }
 }
 
 variable "kubernetes_version" {
@@ -108,12 +102,6 @@ variable "network_plugin" {
 variable "outbound_type" {
   description = "(Optional) The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are loadBalancer and userDefinedRouting. Defaults to loadBalancer."
   type        = string
-  default     = "userDefinedRouting"
-
-  validation {
-    condition = contains(["loadBalancer", "userDefinedRouting"], var.outbound_type)
-    error_message = "The outbound type is invalid."
-  }
 }
 
 variable "default_node_pool_name" {
@@ -229,24 +217,6 @@ variable "oms_agent" {
   default     = {
     enabled                     = true
     log_analytics_workspace_id  = null
-  }
-}
-
-variable "ingress_application_gateway" {
-  description = "Specifies the Application Gateway Ingress Controller addon configuration."
-  type        = object({
-    enabled      = bool
-    gateway_id   = string
-    gateway_name = string
-    subnet_cidr  = string
-    subnet_id    = string
-  })
-  default     = {
-    enabled      = false           
-    gateway_id   = null
-    gateway_name = null
-    subnet_cidr  = null
-    subnet_id    = null
   }
 }
 

@@ -97,6 +97,28 @@ variable "aks_cluster_name" {
   type        = string
 }
 
+variable "aks_outbound_type" {
+  description = "(Optional) The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are loadBalancer and userDefinedRouting. Defaults to loadBalancer."
+  type        = string
+  default     = "userDefinedRouting"
+
+  validation {
+    condition = contains(["loadBalancer", "userDefinedRouting"], var.aks_outbound_type)
+    error_message = "The outbound type is invalid."
+  }
+}
+
+variable "aks_sku_tier" {
+  description = "(Optional) The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA). Defaults to Free."
+  default     = "Paid"
+  type        = string
+
+  validation {
+    condition = contains( ["Free", "Paid"], var.aks_sku_tier)
+    error_message = "The sku tier is invalid."
+  }
+}
+
 variable "pe_subnet_name" {
   description = "Specifies the name of the private endpoint subnet"
   default     = "endpoints"
@@ -178,17 +200,6 @@ variable "azure_rbac_enabled" {
   description = "(Optional) Is Role Based Access Control based on Microsoft Entra ID enabled?"
   default     = true
   type        = bool
-}
-
-variable "sku_tier" {
-  description = "(Optional) The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA). Defaults to Free."
-  default     = "Paid"
-  type        = string
-
-  validation {
-    condition = contains( ["Free", "Paid"], var.sku_tier)
-    error_message = "The sku tier is invalid."
-  }
 }
 
 variable "kubernetes_version" {
@@ -279,13 +290,13 @@ variable "default_node_pool_max_count" {
 variable "default_node_pool_min_count" {
   description = "(Required) The minimum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be less than or equal to max_count."
   type          = number
-  default       = 3
+  default       = 1
 }
 
 variable "default_node_pool_node_count" {
   description = "(Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be a value in the range min_count - max_count."
   type          = number
-  default       = 3
+  default       = 1
 }
 
 variable "additional_node_pool_subnet_name" {
@@ -387,13 +398,13 @@ variable "additional_node_pool_max_count" {
 variable "additional_node_pool_min_count" {
   description = "(Required) The minimum number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be less than or equal to max_count."
   type          = number
-  default       = 3
+  default       = 1
 }
 
 variable "additional_node_pool_node_count" {
   description = "(Optional) The initial number of nodes which should exist within this Node Pool. Valid values are between 0 and 1000 and must be a value in the range min_count - max_count."
   type          = number
-  default       = 3
+  default       = 1
 }
 
 variable "domain_name_label" {

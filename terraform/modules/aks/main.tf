@@ -81,16 +81,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
     log_analytics_workspace_id      = coalesce(var.oms_agent.log_analytics_workspace_id, var.log_analytics_workspace_id)
   }
 
-  dynamic "ingress_application_gateway" {
-    for_each = try(var.ingress_application_gateway.gateway_id, null) == null ? [] : [1]
-
-    content {
-      gateway_id                 = var.ingress_application_gateway.gateway_id
-      subnet_cidr                = var.ingress_application_gateway.subnet_cidr
-      subnet_id                  = var.ingress_application_gateway.subnet_id
-    }
-  }
-
   azure_active_directory_role_based_access_control {
     managed                    = true
     tenant_id                  = var.tenant_id
@@ -111,7 +101,6 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   }
 }
 
-/*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
   name                       = "DiagnosticsSettings"
   target_resource_id         = azurerm_kubernetes_cluster.aks_cluster.id
@@ -149,4 +138,3 @@ resource "azurerm_monitor_diagnostic_setting" "settings" {
     category = "AllMetrics"
   }
 }
-*/

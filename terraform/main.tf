@@ -191,7 +191,7 @@ module "aks_cluster" {
   dns_prefix                               = lower(var.aks_cluster_name)
   private_cluster_enabled                  = var.private_cluster_enabled
   automatic_channel_upgrade                = var.automatic_channel_upgrade
-  sku_tier                                 = var.sku_tier
+  sku_tier                                 = var.aks_sku_tier
   default_node_pool_name                   = var.default_node_pool_name
   default_node_pool_vm_size                = var.default_node_pool_vm_size
   vnet_subnet_id                           = module.aks_network.subnet_ids[var.default_node_pool_subnet_name]
@@ -209,7 +209,7 @@ module "aks_cluster" {
   tags                                     = var.tags
   network_dns_service_ip                   = var.network_dns_service_ip
   network_plugin                           = var.network_plugin
-  outbound_type                            = "userDefinedRouting"
+  outbound_type                            = var.aks_outbound_type
   network_service_cidr                     = var.network_service_cidr
   log_analytics_workspace_id               = module.log_analytics_workspace.id
   role_based_access_control_enabled        = var.role_based_access_control_enabled
