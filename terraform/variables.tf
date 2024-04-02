@@ -663,7 +663,7 @@ variable "admin_username" {
 variable "ssh_public_key" {
   description = "(Required) Specifies the SSH public key for the jumpbox virtual machine and AKS worker nodes."
   type        = string
-  default     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnlUxb1WJvai7h7pQ6XDZugLJhXJkFIGgj3yG7Hnpu6xUrx/PsRtP3jT1HLUrkNXOC5oTckddsKZ2/JTxcPlkNuCEy1yOn2MgeLvIS2DW5ODJCtyf38CwKLkkCu63eo9vu2G3V7X2KJjg8QjVTbGxqp+0hK7J3cMahBcbLrtpOFRIVxxcMyNIkGSM0QpACkKRcuL74JTLyEb9V5IUbw39k7v3ZtrJSdlG0GNw3GqgRxYisIuWF02bqbKNv7+qOu07OSnXfalo1oC+Bop4AKdU2AFyg/6bOjiLsx3YcZpzKljE2eqKtO750NEiL12RDPmQwsnEMMK9rVk0SP8cx6TH7fRlmFN6eVmRmbXe5BNlnCafx5l5dyikckvtG5qylUP3H5iU4znAByGIM2tH0xaxEfJ9BvYIWw1oD9BonYKoZsVB3AaQ3+wFEgvOqGDHCDd8Vgd2tyJjq4Q9qVOafz+7DfdF1JSDVNJ84fa45czR0gqMVRBYFirKsMJJ4I6scPYs= peter@surface-laptop"
+  default     = ""
 }
 /*
 variable "script_storage_account_name" {
