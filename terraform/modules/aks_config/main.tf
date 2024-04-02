@@ -16,18 +16,18 @@ provider "kubernetes" {
 
 resource "kubernetes_service" "aks_cluster" {
   metadata {
-    name = "lb-internal-service"
+    name = var.k8s_service_name
     annotations = {
-      "service.beta.kubernetes.io/azure-load-balancer-internal" = "true"
-      "service.beta.kubernetes.io/azure-load-balancer-internal-subnet" = "lb-subnet"
-      "service.beta.kubernetes.io/azure-pls-create" = "true"
+      "service.beta.kubernetes.io/azure-load-balancer-internal" = var.azure_load_balancer_internal
+      "service.beta.kubernetes.io/azure-load-balancer-internal-subnet" = var.azure_load_balancer_internal_subnet
+      "service.beta.kubernetes.io/azure-pls-create" = var.azure_pls_create
     }
   }
   spec {
     port {
-      port        = 8080
-      target_port = 80
+      port        = var.k8s_service_port
+      target_port = var.k8s_service_target_port
     }
-    type = "LoadBalancer"
+    type = var.k8s_service_type
   }
 }

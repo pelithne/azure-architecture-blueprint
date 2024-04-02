@@ -279,3 +279,17 @@ variable "http_application_routing_enabled" {
   default     = false
 }
 
+variable "vnet_name" {
+  description = "The name of the Hub virtual network"
+  type        = string
+}
+
+variable "private_dns_zone_name" {
+  description = "The name of the Private DNS Zone"
+  type        = string
+}
+
+variable "hub_resource_group_name" {
+  description = "Specifies the hub resource group name"
+  type        = string
+}

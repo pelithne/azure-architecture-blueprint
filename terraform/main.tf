@@ -195,6 +195,9 @@ module "aks_cluster" {
   default_node_pool_name                   = var.default_node_pool_name
   default_node_pool_vm_size                = var.default_node_pool_vm_size
   vnet_subnet_id                           = module.aks_network.subnet_ids[var.default_node_pool_subnet_name]
+  private_dns_zone_name                    = "privatelink.${var.spoke_location}.azmk8s.io"
+  hub_resource_group_name                  = var.hub_resource_group_name
+  vnet_name                                = var.hub_vnet_name
   default_node_pool_availability_zones     = var.default_node_pool_availability_zones
   default_node_pool_node_labels            = var.default_node_pool_node_labels
   default_node_pool_node_taints            = var.default_node_pool_node_taints

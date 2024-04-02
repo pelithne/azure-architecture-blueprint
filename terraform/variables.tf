@@ -47,7 +47,7 @@ variable "spoke_resource_group_name" {
 
 variable "hub_vnet_name" {
   description = "Specifies the name of the hub virtual virtual network"
-  default     = "HubVNet"
+  default     = "vnet200-nels-lab1-mgmt"
   type        = string
 }
 
@@ -69,7 +69,7 @@ variable "hub_firewall_subnet_address_prefix" {
 
 variable "vm_subnet_name" {
   description = "Specifies the name of the jumpbox subnet"
-  default     = "VmSubnet"
+  default     = "jumpbox-subnet"
   type        = string
 }
 
@@ -81,7 +81,7 @@ variable "vm_subnet_address_prefix" {
 
 variable "aks_vnet_name" {
   description = "Specifies the name of the AKS subnet"
-  default     = "AksVNet"
+  default     = "vnet201-nels-lab1-aks"
   type        = string
 }
 
@@ -121,7 +121,7 @@ variable "aks_sku_tier" {
 
 variable "pe_subnet_name" {
   description = "Specifies the name of the private endpoint subnet"
-  default     = "endpoints"
+  default     = "subnet-priv-endpoint"
   type        = string
 }
 
@@ -133,7 +133,7 @@ variable "pe_subnet_address_prefix" {
 
 variable "lb_subnet_name" {
   description = "Specifies the name of the lb subnet"
-  default     = "loadbalancer"
+  default     = "subnet-lb"
   type        = string
 }
 
@@ -145,7 +145,7 @@ variable "lb_subnet_address_prefix" {
 
 variable "pod_subnet_name" {
   description = "Specifies the name of the pod subnet."
-  default     =  "PodSubnet"
+  default     =  "subnet-aks-pods"
   type        = string
 }
 
@@ -163,7 +163,7 @@ variable "default_node_pool_name" {
 
 variable "default_node_pool_subnet_name" {
   description = "Specifies the name of the subnet that hosts the default node pool"
-  default     =  "SystemNodePoolSubnet"
+  default     =  "subnet-aks-system-nodepool"
   type        = string
 }
 
@@ -301,7 +301,7 @@ variable "default_node_pool_node_count" {
 
 variable "additional_node_pool_subnet_name" {
   description = "Specifies the name of the subnet that hosts the default node pool"
-  default     =  "UserNodePoolSubnet"
+  default     =  "subnet-aks-nodes"
   type        = string
 }
 
@@ -582,7 +582,7 @@ variable "storage_account_replication_type" {
 variable "key_vault_name" {
   description = "Specifies the name of the key vault."
   type        = string
-  default     = "kvalipelithne222"
+  default     = "kvalipelithne2222"
 }
 
 variable "key_vault_sku_name" {
@@ -753,4 +753,46 @@ variable "private_cluster_enabled" {
   description = "Define if cluster is private or public"
   type        = bool
   default     = true
+}
+
+variable "k8s_service_name" {
+  description = "(Required) Specifies the name of the Kubernetes service."
+  default = "lb-internal-service"
+  type        = string
+}
+
+variable "azure_load_balancer_internal" {
+  description = "(Optional) Specifies whether the service is internal or not."
+  default     = true
+  type        = bool
+}
+
+variable "azure_load_balancer_internal_subnet" {
+  description = "(Optional) Specifies the subnet name for the internal load balancer."
+  default     = "subnet-lb"  
+  type        = string
+}
+
+variable "azure_pls_create" {
+  description = "(Optional) Specifies whether the service is internal or not."
+ default     = true
+  type        = bool
+}
+
+variable "k8s_service_port" {
+  description = "(Optional) Specifies the port of the Kubernetes service."
+  default     = "8080"
+  type        = string
+}
+
+variable "k8s_service_target_port" {
+  description = "(Optional) Specifies the target port of the Kubernetes service."
+  default     = "80"
+  type        = string
+}
+
+variable "k8s_service_type" {
+  description = "(Optional) Specifies the type of the Kubernetes service."
+  default     = "LoadBalancer"
+  type        = string
 }

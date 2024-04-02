@@ -22,6 +22,25 @@ resource "azurerm_user_assigned_identity" "aks_identity" {
   }
 }
 
+
+data "azurerm_virtual_network" "hub_vnet" {
+  name                = var.vnet_name
+  resource_group_name = var.hub_resource_group_name
+}
+
+
+resource "azurerm_private_dns_zone" "aks_dns_zone" {
+  name                = var.private_dns_zone_name
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "aks_virtual_network_link" {
+  name                  = "aks_virtual_network_link_to_hub"
+  resource_group_name   = var.resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.aks_dns_zone.name
+  virtual_network_id    = data.azurerm_virtual_network.hub_vnet.id
+}
+
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                             = var.name
   location                         = var.location
@@ -29,6 +48,7 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   kubernetes_version               = var.kubernetes_version
   dns_prefix                       = var.dns_prefix
   private_cluster_enabled          = var.private_cluster_enabled
+  private_dns_zone_id              = azurerm_private_dns_zone.aks_dns_zone.id
   automatic_channel_upgrade        = var.automatic_channel_upgrade
   sku_tier                         = var.sku_tier
   workload_identity_enabled        = var.workload_identity_enabled
