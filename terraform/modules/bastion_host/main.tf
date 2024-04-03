@@ -11,11 +11,11 @@ terraform {
 
 // This block creates a public IP address resource in Azure.
 resource "azurerm_public_ip" "public_ip" {
-  name                = "${var.name}PublicIp" // The name of the public IP address.
-  location            = var.location // The location where the public IP address will be created.
+  name                = "${var.name}PublicIp"   // The name of the public IP address.
+  location            = var.location            // The location where the public IP address will be created.
   resource_group_name = var.resource_group_name // The name of the resource group in which to create the public IP address.
-  allocation_method   = "Static" // The allocation method for the public IP address. This is set to Static.
-  sku                 = "Standard" // The SKU of the public IP address. This is set to Standard.
+  allocation_method   = "Static"                // The allocation method for the public IP address. This is set to Static.
+  sku                 = "Standard"              // The SKU of the public IP address. This is set to Standard.
 
   lifecycle {
       ignore_changes = [
@@ -26,14 +26,14 @@ resource "azurerm_public_ip" "public_ip" {
 
 // This block creates a Bastion Host resource in Azure.
 resource "azurerm_bastion_host" "bastion_host" {
-  name                = var.name // The name of the Bastion Host.
-  location            = var.location // The location where the Bastion Host will be created.
+  name                = var.name                // The name of the Bastion Host.
+  location            = var.location            // The location where the Bastion Host will be created.
   resource_group_name = var.resource_group_name // The name of the resource group in which to create the Bastion Host.
-  tags                = var.tags // The tags to associate with the Bastion Host.
+  tags                = var.tags                // The tags to associate with the Bastion Host.
 
   ip_configuration {
-    name                 = "configuration" // The name of the IP configuration.
-    subnet_id            = var.subnet_id // The ID of the subnet in which to create the Bastion Host.
+    name                 = "configuration"                // The name of the IP configuration.
+    subnet_id            = var.subnet_id                  // The ID of the subnet in which to create the Bastion Host.
     public_ip_address_id = azurerm_public_ip.public_ip.id // The ID of the public IP address to associate with the Bastion Host.
   }
 
