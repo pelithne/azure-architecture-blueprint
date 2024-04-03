@@ -3,8 +3,8 @@
 
 ### Configure VNET (with correct subnet addressing)
 
-### Deploy private AKS cluster
+### Create random string for global resources (acr, keyvault, etc?)
 
-### 
+### Create comprehensive documentation
 
 
