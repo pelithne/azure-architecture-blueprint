@@ -1,5 +1,6 @@
 ## Azure Architecture Blueprint
 
+### Introduction
 
 This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services. The entire infrastructure is defined and managed using Terraform.
 
@@ -42,3 +43,29 @@ The modules used are as follows:
 * `Virtual_network_peering`: This module connects the VNETs together using peering.
 
 * `Virtual_network_spoke`: This module creates the spoke VNET, which is used for isolating workloads in a hub-and-spoke architecture.
+
+
+### How to use this terraform repository
+
+#### Run templates with default values
+
+Using the terraform templates in this repo, can be as simple as below (in reality there is a bit more to it)
+
+````
+git clone git@github.com:pelithne/azure-architecture-blueprint.git 
+
+cd azure-architecture-blueprint
+
+cd terraform
+
+terraform init
+
+terraform plan  -out=plan.out  
+
+terraform apply "plan.out"   
+
+````
+
+#### Run templates with edited variables
+
+Anything that needs to be customized in the templates should be done in the main ````variables.tf```` or by providing input variables on the command-line or through a pipeline. The content of ````main.tf```` and the various modules used from ````main.tf```` should not have to be changed.
