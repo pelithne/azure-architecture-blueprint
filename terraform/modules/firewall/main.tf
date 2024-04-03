@@ -1,13 +1,17 @@
+
+# This block specifies the required providers and their sources.
+# In this case, the Azure Resource Manager (azurerm) provider is required.
 terraform {
   required_providers {
     azurerm = {
       source = "hashicorp/azurerm"
     }
   }
-
+ # This line specifies the minimum required version of Terraform for this configuration.
   required_version = ">= 0.14.9"
 }
 
+# This block creates a public IP resource in Azure.
 resource "azurerm_public_ip" "pip" {
   name                = var.pip_name
   resource_group_name = var.resource_group_name
@@ -17,6 +21,7 @@ resource "azurerm_public_ip" "pip" {
   sku                 = "Standard"
   tags                = var.tags
 
+# This block specifies that changes to the tags of this resource should be ignored.
   lifecycle {
     ignore_changes = [
       tags
@@ -24,6 +29,7 @@ resource "azurerm_public_ip" "pip" {
   }
 }
 
+# This block creates an Azure Firewall resource.
 resource "azurerm_firewall" "firewall" {
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -35,13 +41,14 @@ resource "azurerm_firewall" "firewall" {
   firewall_policy_id  = azurerm_firewall_policy.policy.id
   tags                = var.tags
 
-
+# This block specifies the IP configuration for the firewall.
   ip_configuration {
     name                 = "fw_ip_config"
     subnet_id            = var.subnet_id
     public_ip_address_id = azurerm_public_ip.pip.id
   }
 
+ # This block specifies that changes to the tags of this resource should be ignored.
   lifecycle {
     ignore_changes = [
       tags,
@@ -50,6 +57,7 @@ resource "azurerm_firewall" "firewall" {
   }
 }
 
+# This block creates an Azure Firewall policy resource.
 resource "azurerm_firewall_policy" "policy" {
   name                = "${var.name}Policy"
   resource_group_name = var.resource_group_name
@@ -62,16 +70,19 @@ resource "azurerm_firewall_policy" "policy" {
   }
 }
 
+# This block specifies that changes to the tags of this resource should be ignored.
 resource "azurerm_firewall_policy_rule_collection_group" "policy" {
   name               = "AksEgressPolicyRuleCollectionGroup"
   firewall_policy_id = azurerm_firewall_policy.policy.id
   priority           = 500
 
+# This block creates an Azure Firewall policy rule collection group resource.
   application_rule_collection {
     name     = "ApplicationRules"
     priority = 500
     action   = "Allow"
-
+# Each rule block specifies a rule within the application rule collection.
+# The rules specify the source addresses, destination FQDNs, and protocols.
     rule {
       name             = "AllowMicrosoftFqdns"
       source_addresses = ["*"]
@@ -184,11 +195,14 @@ resource "azurerm_firewall_policy_rule_collection_group" "policy" {
     }
   }
 
+# This block specifies the network rules for the policy.
   network_rule_collection {
     name     = "NetworkRules"
     priority = 400
     action   = "Allow"
 
+# Each rule block specifies a rule within the network rule collection.
+# The rules specify the source addresses, destination ports, destination addresses, and protocols.
     rule {
       name                  = "Time"
       source_addresses      = ["*"]
@@ -226,6 +240,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "policy" {
     }
   }
 
+ # This block specifies that changes to the rule collections of this resource should be ignored.
   lifecycle {
     ignore_changes = [
       application_rule_collection,
@@ -234,6 +249,11 @@ resource "azurerm_firewall_policy_rule_collection_group" "policy" {
     ]
   }
 }
+
+
+# The following commented out blocks create Azure Monitor diagnostic setting resources.
+# These settings enable logs and metrics for the Azure Firewall and public IP resources.
+# Uncomment these blocks to enable these settings.
 
 /*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
