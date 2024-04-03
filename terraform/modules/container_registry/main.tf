@@ -63,9 +63,9 @@ resource "azurerm_user_assigned_identity" "acr_identity" {
 // This block is commented out. If uncommented, it would create a diagnostic setting for the ACR.
 /*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
-  name                       = "DiagnosticsSettings" // Specifies the name of the diagnostic setting.
-  target_resource_id         = azurerm_container_registry.acr.id // Specifies the ID of the ACR for which to create the diagnostic setting.
-  log_analytics_workspace_id = var.log_analytics_workspace_id // Specifies the ID of the Log Analytics workspace to which to send the diagnostic data.
+  name                       = "DiagnosticsSettings"              // Specifies the name of the diagnostic setting.
+  target_resource_id         = azurerm_container_registry.acr.id  // Specifies the ID of the ACR for which to create the diagnostic setting.
+  log_analytics_workspace_id = var.log_analytics_workspace_id     // Specifies the ID of the Log Analytics workspace to which to send the diagnostic data.
 
   // This block enables logging for repository events.
   enabled_log {
