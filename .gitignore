@@ -7,6 +7,8 @@ plan.out
 
 # random stuff
 terraform-stuff/source/
+id_rsa
+id_rsa.pub
 
 # .tfstate files
 *.tfstate
