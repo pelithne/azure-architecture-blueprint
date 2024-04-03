@@ -11,34 +11,34 @@ The main.tf file utilizes various modules to deploy each component of the infras
 
 The modules used are as follows:
 
-* Aks: This module deploys the AKS Kubernetes Cluster.
+* `Aks`: This module deploys the AKS Kubernetes Cluster.
 
-* Bastion_host: This module creates the bastion host, which is used to access the jump server (that can access the Kubernetes API).
+* `Bastion_host`: This module creates the bastion host, which is used to access the jump server (that can access the Kubernetes API).
 
-* Container_registry: This module creates an Azure Container Registry, which is used for storing container images.
+* `Container_registry`: This module creates an Azure Container Registry, which is used for storing container images.
 
-* Diagnostic_setting: This module can be used to define the level of infrastructure logging (currently not in use).
+* `Diagnostic_setting`: This module can be used to define the level of infrastructure logging (currently not in use).
 
-* Firewall: This module creates the Azure firewall that handles all egress traffic.
+* `Firewall`: This module creates the Azure firewall that handles all egress traffic.
 
-* Key_vault: This module creates the Azure Key Vault for secure storage of secrets.
+* `Key_vault`: This module creates the Azure Key Vault for secure storage of secrets.
 
-* Log_analytics: This module creates a Log Analytics workspace for comprehensive analytics and insights.
+* `Log_analytics`: This module creates a Log Analytics workspace for comprehensive analytics and insights.
 
-* Network_security_group: This module creates Network Security Groups (NSGs) for the Virtual Networks (VNETs).
+* `Network_security_group`: This module creates Network Security Groups (NSGs) for the Virtual Networks (VNETs).
 
-* Node_pool: This module creates a node pool within the AKS cluster.
+* `Node_pool`: This module creates a node pool within the AKS cluster.
 
-* Private_dns_zone: This module creates the private DNS zones required for the private endpoints.
+* `Private_dns_zone`: This module creates the private DNS zones required for the private endpoints.
 
-* Private_endpoint: This module creates private endpoints (currently for Azure Container Registry and Key Vault).
+* `Private_endpoint`: This module creates private endpoints (currently for Azure Container Registry and Key Vault).
 
-* Route_table: This module creates a route table that directs egress traffic from AKS to the firewall.
+* `Route_table`: This module creates a route table that directs egress traffic from AKS to the firewall.
 
-* Virtual_machine: This module creates the Virtual Machine (VM) that is used by the bastion host to access the AKS Kubernetes API.
+* `Virtual_machine`: This module creates the Virtual Machine (VM) that is used by the bastion host to access the AKS Kubernetes API.
 
-* Virtual_network: This module creates the hub Virtual Network (VNET).
+* `Virtual_network`: This module creates the hub Virtual Network (VNET).
 
-* Virtual_network_peering: This module connects the VNETs together using peering.
+* `Virtual_network_peering`: This module connects the VNETs together using peering.
 
-* Virtual_network_spoke: This module creates the spoke VNET, which is used for isolating workloads in a hub-and-spoke architecture.
+* `Virtual_network_spoke`: This module creates the spoke VNET, which is used for isolating workloads in a hub-and-spoke architecture.
