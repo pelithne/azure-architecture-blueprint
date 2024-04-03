@@ -1,44 +1,42 @@
-## azure-architecture-blueprint
+Azure Architecture Blueprint
+This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services. The entire infrastructure is defined and managed using Terraform.
 
-This repository contains a complete software defined infrastructure for running Kubernetes in Azure using Azure Kubernetes Service, and related services. The infrastructure is defined using Terraform.
+The primary source of documentation for this repository is the comments within the main.tf Terraform template. For a more in-depth understanding, please refer to this file.
 
-Documentation for this repository is based mainly on comments in the main.tf terraform template. For more details, please check that file.
+The main.tf template outlines a series of steps to deploy a full-fledged infrastructure. It is associated with the variables.tf file, which houses all the necessary variables for the deployment process.
 
-The main.tf template goes through a number of steps to deploy a complete infrastructure. Associated with main.tf is the variables.tf file, which contains all the variables needed for deployment. 
+The main.tf file utilizes various modules to deploy each component of the infrastructure. These modules, in turn, have their own variables.tf files. In this context, these can be viewed as placeholders and typically do not require any modifications.
 
-Main.tf uses modules for deploying each of the needed components. The modules in turn, have their own variables.tf which in this context can be seen as place holders (there should be no need to edit these files).
+The modules used are as follows:
 
+* Aks: This module deploys the AKS Kubernetes Cluster.
 
-The modules are the following
+* Bastion_host: This module creates the bastion host, which is used to access the jump server (that can access the Kubernetes API).
 
-* Aks: This module deploys the AKS Kubernetes Cluster
+* Container_registry: This module creates an Azure Container Registry, which is used for storing container images.
 
-* Bastion_host: Creates the bastion host, that will be used to accsess the jump server (which can access the k8s API)
+* Diagnostic_setting: This module can be used to define the level of infrastructure logging (currently not in use).
 
-* Container_registry: Creates an Azure Container Registry, for storing container images
+* Firewall: This module creates the Azure firewall that handles all egress traffic.
 
-* Diagnostic_setting: can be used to define the level of infrastructure logging (not used currently)
+* Key_vault: This module creates the Azure Key Vault for secure storage of secrets.
 
-* Firewall: Crates the Azure firewall that is used for all egress traffic
+* Log_analytics: This module creates a Log Analytics workspace for comprehensive analytics and insights.
 
-* Key_vault: Creates the Azure Key Vault
+* Network_security_group: This module creates Network Security Groups (NSGs) for the Virtual Networks (VNETs).
 
-* Log_analytics: Creates a log-analytics workspace
+* Node_pool: This module creates a node pool within the AKS cluster.
 
-* Network_security_group: Creates Network Security Groups (NSGs) for the VNETs
+* Private_dns_zone: This module creates the private DNS zones required for the private endpoints.
 
-* Node_pool: Creates a node pool in the AKS cluster
+* Private_endpoint: This module creates private endpoints (currently for Azure Container Registry and Key Vault).
 
-* Private_dns_zone: Creates the private DNS zones needed for the private endpoints
+* Route_table: This module creates a route table that directs egress traffic from AKS to the firewall.
 
-* Private_endpoint: Create private endpoints (for now, for ACR and Key vault)
+* Virtual_machine: This module creates the Virtual Machine (VM) that is used by the bastion host to access the AKS Kubernetes API.
 
-* Route_table: Creates a route table the routes egress traffic from AKS to the FW
+* Virtual_network: This module creates the hub Virtual Network (VNET).
 
-* Virtual_machine: Creates the VM that is used by the bastion, to access AKS K8s API.
+* Virtual_network_peering: This module connects the VNETs together using peering.
 
-* Virtual_network: Creates the hub VNET
-
-* Virtual_network_peering: Connect the VNETs toghether using peering
-
-* Virtual_network_spoke: Creates the spoke VNET
+* Virtual_network_spoke: This module creates the spoke VNET, which is used for isolating workloads in a hub-and-spoke architecture.
