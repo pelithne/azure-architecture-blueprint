@@ -1,3 +1,4 @@
+// This block specifies the version and providers that Terraform will use for this configuration.
 terraform {
   required_providers {
     azurerm = {
@@ -7,6 +8,8 @@ terraform {
 
   required_version = ">= 0.14.9"
 }
+
+// This block creates a public IP address resource in Azure.
 
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.name}PublicIp"
@@ -24,6 +27,7 @@ resource "azurerm_public_ip" "public_ip" {
   }
 }
 
+// This block creates a network security group resource in Azure.
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.name}Nsg"
   location            = var.location
@@ -49,6 +53,7 @@ resource "azurerm_network_security_group" "nsg" {
   }
 }
 
+// This block creates a network interface resource in Azure.
 resource "azurerm_network_interface" "nic" {
   name                = "${var.name}Nic"
   location            = var.location
@@ -69,11 +74,13 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
+// This block associates the network security group with the network interface.
 resource "azurerm_network_interface_security_group_association" "nsg_association" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
   depends_on = [azurerm_network_security_group.nsg]
 }
+// This block creates a Linux virtual machine resource in Azure.
 
 resource "azurerm_linux_virtual_machine" "virtual_machine" {
   name                          = var.name
@@ -119,6 +126,7 @@ resource "azurerm_linux_virtual_machine" "virtual_machine" {
   ]
 }
 
+// This block is commented out. If uncommented, it would create a virtual machine extension for running custom scripts.
 /*
 resource "azurerm_virtual_machine_extension" "custom_script" {
   name                    = "${var.name}CustomScript"
@@ -178,6 +186,8 @@ resource "azurerm_virtual_machine_extension" "monitor_agent" {
   }
   //depends_on = [azurerm_virtual_machine_extension.custom_script]
 }
+
+// This block is commented out. If uncommented, it would create a virtual machine extension for monitoring.
 
 resource "azurerm_virtual_machine_extension" "dependency_agent" {
   name                       = "${var.name}DependencyAgent"
