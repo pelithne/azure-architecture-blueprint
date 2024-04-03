@@ -1,4 +1,6 @@
-Azure Architecture Blueprint
+## Azure Architecture Blueprint
+
+
 This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services. The entire infrastructure is defined and managed using Terraform.
 
 The primary source of documentation for this repository is the comments within the main.tf Terraform template. For a more in-depth understanding, please refer to this file.
