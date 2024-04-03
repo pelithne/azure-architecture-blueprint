@@ -1,14 +1,19 @@
+# This block specifies the required providers and versions for the Terraform configuration.
 terraform {
   required_providers {
+    # The Azure Resource Manager (azurerm) provider is required.
     azurerm = {
       source  = "hashicorp/azurerm"
     }
   }
 
+  # The minimum required version of Terraform for this configuration is 0.14.9.
   required_version = ">= 0.14.9"
 }
 
+# This block defines an Azure Key Vault resource.
 resource "azurerm_key_vault" "key_vault" {
+  # These lines set various properties of the Key Vault using variables.
   name                            = var.name
   location                        = var.location
   resource_group_name             = var.resource_group_name
@@ -22,10 +27,12 @@ resource "azurerm_key_vault" "key_vault" {
   purge_protection_enabled        = var.purge_protection_enabled
   soft_delete_retention_days      = var.soft_delete_retention_days
   
+  # This block sets the timeout for deleting the Key Vault to 60 minutes.
   timeouts {
     delete = "60m"
   }
 
+  # This block sets the network access control lists (ACLs) for the Key Vault.
   network_acls {
     bypass                     = var.bypass
     default_action             = var.default_action
@@ -33,6 +40,7 @@ resource "azurerm_key_vault" "key_vault" {
     virtual_network_subnet_ids = var.virtual_network_subnet_ids
   }
 
+  # This block specifies that changes to the tags property should be ignored during lifecycle operations.
   lifecycle {
       ignore_changes = [
           tags
@@ -40,6 +48,7 @@ resource "azurerm_key_vault" "key_vault" {
   }
 }
 
+# This block is commented out. If uncommented, it would define a diagnostic setting for monitoring the Key Vault.
 /*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
   name                       = "DiagnosticsSettings"
