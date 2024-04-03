@@ -1,3 +1,4 @@
+// This block specifies the required providers and version for the Terraform configuration.
 terraform {
   required_providers {
     azurerm = {
@@ -8,6 +9,7 @@ terraform {
   required_version = ">= 0.14.9"
 }
 
+// This block creates a virtual network resource.
 resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
   address_space       = var.address_space
@@ -15,6 +17,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = var.resource_group_name
   tags                = var.tags
 
+  // This block specifies that changes to the 'tags' attribute should be ignored during lifecycle operations.
   lifecycle {
     ignore_changes = [
         tags
@@ -22,7 +25,7 @@ resource "azurerm_virtual_network" "vnet" {
   }
 }
 
-
+// This block creates a subnet resource for each subnet specified in the 'subnets' variable.
 resource "azurerm_subnet" "subnet" {
   for_each = { for subnet in var.subnets : subnet.name => subnet }
 
@@ -34,6 +37,7 @@ resource "azurerm_subnet" "subnet" {
   private_link_service_network_policies_enabled  = each.value.private_link_service_network_policies_enabled
 }
 
+// The following block is commented out. If uncommented, it would create a diagnostic setting resource for the virtual network.
 /*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
   name                       = "DiagnosticsSettings"
