@@ -1,8 +1,8 @@
 ## azure-architecture-blueprint
 
-Infrastructure defined in Terraform
+This repository contains a complete software defined infrastructure for running Kubernetes in Azure using Azure Kubernetes Service, and related services. The infrastructure is defined using Terraform.
 
-Documentation for this repository is based mainly on comments in the main.tf terraform template. 
+Documentation for this repository is based mainly on comments in the main.tf terraform template. For more details, please check that file.
 
 The main.tf template goes through a number of steps to deploy a complete infrastructure. Associated with main.tf is the variables.tf file, which contains all the variables needed for deployment. 
 
