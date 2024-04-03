@@ -4,8 +4,13 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "3.50"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
   }
 }
+
 
 provider "azurerm" {
   features {}
@@ -77,7 +82,6 @@ module "hub_network" {
 }
 
 
-
 module "aks_network" {
   source                       = "./modules/virtual_network_spoke"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
@@ -117,7 +121,6 @@ module "aks_network" {
       private_endpoint_network_policies_enabled : true
       private_link_service_network_policies_enabled : false
     }
-    
   ]
 }
 
@@ -172,7 +175,7 @@ module "routetable" {
 
 module "container_registry" {
   source                       = "./modules/container_registry"
-  name                         = var.acr_name
+  name                         = "${var.acr_name}${random_string.resource_suffix.result}"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
   location                     = var.location
   sku                          = var.acr_sku
@@ -248,8 +251,8 @@ resource "azurerm_role_assignment" "acr_pull" {
 }
 
 # Generate randon name for virtual machine
-resource "random_string" "storage_account_suffix" {
-  length  = 8
+resource "random_string" "resource_suffix" {
+  length  = 4
   special = false
   lower   = true
   upper   = false
@@ -310,7 +313,7 @@ module "node_pool" {
 
 module "key_vault" {
   source                          = "./modules/key_vault"
-  name                            = var.key_vault_name
+  name                            = "${var.key_vault_name}${random_string.resource_suffix.result}"
   location                        = var.location
   resource_group_name             = azurerm_resource_group.spoke_rg.name
   tenant_id                       = data.azurerm_client_config.current.tenant_id

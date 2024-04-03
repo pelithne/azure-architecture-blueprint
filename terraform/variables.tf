@@ -582,7 +582,7 @@ variable "storage_account_replication_type" {
 variable "key_vault_name" {
   description = "Specifies the name of the key vault."
   type        = string
-  default     = "kvalipelithne2222"
+  default     = "kvalipelithne22222"
 }
 
 variable "key_vault_sku_name" {
@@ -663,7 +663,7 @@ variable "admin_username" {
 variable "ssh_public_key" {
   description = "(Required) Specifies the SSH public key for the jumpbox virtual machine and AKS worker nodes."
   type        = string
-  default     = ""
+  default     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQbMSkHMxzXHcuXAbEQk2ELUj52jLa3yI73jcyIvyay4U65uhtnaResw3uXljsMb1ppbFwCFHC7+cNE1WNAI0+/raMka0SbCnC06sZsE78qaNrq3tw7WdnSGfLAMzJTIIQmwA8MxgI6GMw9Sfv++lr2c7ykO2xQL8bx6MI1XewSuHQlq79hWcNQU62kpZLQdKHsOlOx6weaXZxm/3Sb+Q/vno1fasjo5gha3FViBfGxKDJb/1Fizt9ZqcBPMbeEM+h7WIoU29iZcZG4NPjOGGEEUv4enYEPGRmdhfq5GPw5amCL+SQHFaCT1uRVwKzvwm+3tTc4YOL6PITB7mh/f632fDJprZisS7RAQh4EXqObWdoDIzQyz1py30rXIVe/x5phIs79IAtdtJzxQYRbqGkqUvOUi/ozKlylDHkhrr5gKZFRo0S6CRtqzoosFBU4fMQDCT+q3VJPo2T5yXqEipvbYKakIGDq7xFVHWd1/Ofc+R/xDp63zKnmEO0l3E0s70= peter@surface-laptop"
 }
 /*
 variable "script_storage_account_name" {
