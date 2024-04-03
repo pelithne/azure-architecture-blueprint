@@ -80,11 +80,8 @@ module "log_analytics_workspace" {
 # network traffic centrally. It typically contains shared services like VPN, firewall, and other security appliances.
 # Three subnets are created within the virtual network:
 # 1. AzureFirewallSubnet: This subnet is dedicated for Azure Firewall. The address prefix is obtained from a variable.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 2. AzureBastionSubnet: This subnet is dedicated for Azure Bastion. The address prefix is obtained from a variable.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 3. VM Subnet: This subnet is for virtual machines. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
+# 2. AzureBastionSubnet: This subnet is dedicated for Azure Bastion. 
+# 3. VM Subnet: This subnet is for virtual machines.
 module "hub_network" {
   source                       = "./modules/virtual_network"
   resource_group_name          = azurerm_resource_group.hub_rg.name
@@ -122,15 +119,9 @@ module "hub_network" {
 # It includes components like virtual network, subnets, network security groups, and possibly more depending on the specific needs.
 # Five subnets are created within the virtual network:
 # 1. Default Node Pool Subnet: This subnet is for the default node pool of AKS. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 2. Additional Node Pool Subnet: This subnet is for any additional node pools in AKS. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 3. Pod Subnet: This subnet is for pods in AKS. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 4. PE Subnet: This subnet is for private endpoints. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
-# 5. LB Subnet: This subnet is for load balancers. The name and address prefix are obtained from variables.
-#    Network policies for private endpoint and private link service are enabled and disabled respectively.
+# 2. Additional Node Pool Subnet: This subnet is for any additional node pools in AKS.
+# 4. PE Subnet: This subnet is for private endpoints.
+# 5. LB Subnet: This subnet is for load balancers.
 module "aks_network" {
   source                       = "./modules/virtual_network_spoke"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
