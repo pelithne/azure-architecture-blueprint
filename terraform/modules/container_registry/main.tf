@@ -31,8 +31,8 @@ resource "azurerm_container_registry" "acr" {
     for_each = var.georeplication_locations // Specifies the locations for geo-replication.
 
     content {
-      location = georeplications.value  // Specifies the location for this geo-replication.
-      tags     = var.tags               // Specifies the tags to associate with this geo-replication.
+      location = georeplications.value      // Specifies the location for this geo-replication.
+      tags     = var.tags                   // Specifies the tags to associate with this geo-replication.
     }
   }
 
