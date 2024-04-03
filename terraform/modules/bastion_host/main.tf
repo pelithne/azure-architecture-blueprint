@@ -47,9 +47,9 @@ resource "azurerm_bastion_host" "bastion_host" {
 // The following blocks are commented out. If uncommented, they would create diagnostic settings for the Bastion Host and the public IP address.
 /*
 resource "azurerm_monitor_diagnostic_setting" "settings" {
-  name                       = "DiagnosticsSettings" // The name of the diagnostic settings.
+  name                       = "DiagnosticsSettings"                // The name of the diagnostic settings.
   target_resource_id         = azurerm_bastion_host.bastion_host.id // The ID of the resource to which the diagnostic settings apply.
-  log_analytics_workspace_id = var.log_analytics_workspace_id // The ID of the Log Analytics workspace to which the diagnostic data will be sent.
+  log_analytics_workspace_id = var.log_analytics_workspace_id       // The ID of the Log Analytics workspace to which the diagnostic data will be sent.
 
   enabled_log {
     category = "BastionAuditLogs" // Enables the collection of Bastion Audit Logs.
@@ -62,7 +62,7 @@ resource "azurerm_monitor_diagnostic_setting" "settings" {
 
 
 resource "azurerm_monitor_diagnostic_setting" "pip_settings" {
-  name                       = "DiagnosticsSettings" // The name of the diagnostic settings.
+  name                       = "DiagnosticsSettings"          // The name of the diagnostic settings.
   target_resource_id         = azurerm_public_ip.public_ip.id // The ID of the resource to which the diagnostic settings apply.
   log_analytics_workspace_id = var.log_analytics_workspace_id // The ID of the Log Analytics workspace to which the diagnostic data will be sent.
 
@@ -71,15 +71,15 @@ resource "azurerm_monitor_diagnostic_setting" "pip_settings" {
   }
 
   enabled_log {
-    category = "DDoSMitigationFlowLogs" // Enables the collection of DDoS Mitigation Flow Logs.
+    category = "DDoSMitigationFlowLogs"     // Enables the collection of DDoS Mitigation Flow Logs.
   }
 
   enabled_log {
-    category = "DDoSMitigationReports" // Enables the collection of DDoS Mitigation Reports.
+    category = "DDoSMitigationReports"      // Enables the collection of DDoS Mitigation Reports.
   }
 
   metric {
-    category = "AllMetrics" // Enables the collection of all metrics.
+    category = "AllMetrics"                 // Enables the collection of all metrics.
   }
 }
 */
