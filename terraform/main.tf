@@ -1,3 +1,4 @@
+# Specify the required providers and their versions
 terraform {
   required_providers {
     azurerm = {
@@ -11,37 +12,60 @@ terraform {
   }
 }
 
-
+# Azure Resource Manager Provider Configuration
+# This block is used to configure the Azure Resource Manager (azurerm) provider, 
+# which allows Terraform to create, update, and manage resources in Azure. 
+# The `features` block is currently empty, which means it's using default configurations.
 provider "azurerm" {
   features {}
 }
 
+
+# Terraform Configuration Block
+# This block is used to configure Terraform behavior, including the backend. 
+# No configuration is provided for the `local` backend, so it uses default settings.
 terraform {
   backend "local" {
   }
 }
 
+# Local Values
+# This block is used to define local, named values that can be used throughout the Terraform code. 
+# `route_table_name` is the name of the default route table.
+# `route_name` is the name of the route to Azure Firewall.
 locals {
   route_table_name       = "DefaultRouteTable"
   route_name             = "RouteToAzureFirewall"
 }
 
-
+# Data source for getting the current Azure client configuration
+# This data source is used to access the configuration of the currently authenticated Azure client. 
+# It provides details like client ID, subscription ID, tenant ID, and others which can be used in other resources.
 data "azurerm_client_config" "current" {
 }
 
+# Resource for creating an Azure Resource Group
+# This resource is used to create a "hub" resource group in Azure. 
+# A resource group is a container that holds related resources for an Azure solution. 
+# The resource group can include all the resources for the solution, or only those resources that you want to manage as a group.
 resource "azurerm_resource_group" "hub_rg" {
   name     = var.hub_resource_group_name
   location = var.location
   tags     = var.tags
 }
 
+# Resource for creating an Azure Resource Group
+# This resource is used to create a "spoke" resource group in Azure. 
 resource "azurerm_resource_group" "spoke_rg" {
   name     = var.spoke_resource_group_name
   location = var.spoke_location
   tags     = var.tags
 }
 
+# Module for creating a Log Analytics Workspace in Azure
+# This module is responsible for creating a Log Analytics Workspace in Azure. 
+# Log Analytics Workspace is a unique environment for Azure Monitor log data. 
+# Each workspace has its own data repository and configuration, and data sources and solutions are configured to store their data in a workspace.
 module "log_analytics_workspace" {
   source                           = "./modules/log_analytics"
   name                             = var.log_analytics_workspace_name
@@ -50,6 +74,10 @@ module "log_analytics_workspace" {
   solution_plan_map                = var.solution_plan_map
 }
 
+# Module for creating a Hub Network in Azure
+# This module is responsible for creating a hub network in Azure. 
+# A hub network is a design principle that allows you to manage and control 
+# network traffic centrally. It typically contains shared services like VPN, firewall, and other security appliances.
 module "hub_network" {
   source                       = "./modules/virtual_network"
   resource_group_name          = azurerm_resource_group.hub_rg.name
@@ -81,7 +109,10 @@ module "hub_network" {
   ]
 }
 
-
+# Module for creating a network for Azure Kubernetes Service (AKS)
+# This module is responsible for creating a network in Azure for AKS. 
+# The network is a critical part of AKS infrastructure as it provides the communication path for resources and services. 
+# It includes components like virtual network, subnets, network security groups, and possibly more depending on the specific needs.
 module "aks_network" {
   source                       = "./modules/virtual_network_spoke"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
@@ -124,7 +155,12 @@ module "aks_network" {
   ]
 }
 
-
+# Module for creating a Virtual Network Peering in Azure
+# This module is responsible for creating a virtual network peering in Azure. 
+# Virtual network peering enables you to seamlessly connect two Azure virtual networks. 
+# Once peered, the virtual networks appear as one, for connectivity purposes. 
+# The traffic between virtual machines in the peered virtual networks is routed through the Microsoft backbone infrastructure, 
+# much like traffic is routed between virtual machines in the same virtual network.
 module "vnet_peering" {
   source              = "./modules/virtual_network_peering"
   vnet_1_name         = var.hub_vnet_name
@@ -138,6 +174,11 @@ module "vnet_peering" {
   depends_on          = [module.hub_network, module.aks_network]
 }
 
+
+# Module for creating a Firewall in Azure
+# This module is responsible for creating a firewall in Azure. 
+# Azure Firewall is a managed, cloud-based network security service that protects your Azure Virtual Network resources. 
+# It's a fully stateful firewall as a service with built-in high availability and unrestricted cloud scalability.
 module "firewall" {
   source                       = "./modules/firewall"
   name                         = var.firewall_name
@@ -152,6 +193,12 @@ module "firewall" {
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 }
 
+
+# Module for creating a Route Table in Azure
+# This module is responsible for creating a Route Table in Azure. 
+# A Route Table contains a set of rules, called routes, that are used to determine where network traffic is directed. 
+# Each subnet in your VNet can be linked to a route table. 
+# You can also change the routes in your Route Table to make your network traffic flow in a different path.
 module "routetable" {
   source               = "./modules/route_table"
   resource_group_name  = azurerm_resource_group.spoke_rg.name
@@ -173,6 +220,11 @@ module "routetable" {
   }
 }
 
+
+# Module for creating an Azure Container Registry (ACR)
+# This module is responsible for creating an ACR in Azure, which is a managed Docker registry service 
+# used for storing and managing your private Docker container images and related components. 
+# It's used to build, store, and manage images for all types of container deployments.
 module "container_registry" {
   source                       = "./modules/container_registry"
   name                         = "${var.acr_name}${random_string.resource_suffix.result}"
@@ -184,6 +236,11 @@ module "container_registry" {
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 }
 
+
+# Module for creating an Azure Kubernetes Service (AKS) cluster
+# This module is responsible for creating an AKS cluster in Azure. 
+# AKS is a managed container orchestration service provided by Azure for simplifying the deployment, 
+# scaling, and operations of containerized applications.
 module "aks_cluster" {
   source                                   = "./modules/aks"
   name                                     = var.aks_cluster_name
@@ -236,6 +293,11 @@ module "aks_cluster" {
   depends_on                               = [module.routetable]
 }
 
+
+# Resources for creating a Azure Role Assignment
+# This resource is used to assign a specific role to a principal (such as a user, group, or service principal). 
+# In this case, the "Network Contributor" role is being assigned, which allows the principal to manage 
+# all networking resources in Azure.
 resource "azurerm_role_assignment" "network_contributor" {
   scope                = azurerm_resource_group.spoke_rg.id
   role_definition_name = "Network Contributor"
@@ -243,6 +305,10 @@ resource "azurerm_role_assignment" "network_contributor" {
   skip_service_principal_aad_check = true
 }
 
+
+# Resource for creating an Azure Role Assignment
+# This resource is used to assign the "AcrPull" role to a principal. 
+# The "AcrPull" role allows the principal to pull container images from an Azure Container Registry (ACR).
 resource "azurerm_role_assignment" "acr_pull" {
   role_definition_name = "AcrPull"
   scope                = module.container_registry.id
@@ -250,7 +316,9 @@ resource "azurerm_role_assignment" "acr_pull" {
   skip_service_principal_aad_check = true
 }
 
-# Generate randon name for virtual machine
+
+# Generate randon name for resources that need unique names
+# Not fool proof, but good enough for this example.
 resource "random_string" "resource_suffix" {
   length  = 4
   special = false
@@ -260,6 +328,11 @@ resource "random_string" "resource_suffix" {
 }
 
 
+# Module for creating an Azure Bastion Host
+# This module is responsible for creating an Azure Bastion Host, which provides secure and seamless 
+# Remote Desktop Protocol (RDP) and Secure Shell (SSH) access to your virtual machines directly in the 
+# Azure portal over Secure Sockets Layer (SSL). This significantly reduces exposure to the public internet 
+# and eliminates the need of a public IP address or a VPN connection.
 module "bastion_host" {
   source                       = "./modules/bastion_host"
   name                         = var.bastion_host_name
@@ -269,6 +342,11 @@ module "bastion_host" {
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 }
 
+
+# Module for creating an Azure Virtual Machine
+# This module is responsible for creating a virtual machine in Azure. 
+# A virtual machine provides an environment with an operating system, tools, and utilities just like a physical computer. 
+# You can use it to run applications, install additional software, and configure an environment for your specific needs.
 module "virtual_machine" {
   source                              = "./modules/virtual_machine"
   name                                = var.vm_name
@@ -286,6 +364,12 @@ module "virtual_machine" {
   log_analytics_workspace_resource_id = module.log_analytics_workspace.id
 }
 
+
+# Module for creating a Node Pool in Azure Kubernetes Service (AKS)
+# This module is responsible for creating a node pool in an AKS cluster. 
+# A node pool is a group of nodes with the same configuration. Node pools allow you to create dedicated pools 
+# of nodes within your AKS cluster that have specific configurations. This is useful for workloads that require 
+# specific hardware or software configurations.
 module "node_pool" {
   source = "./modules/node_pool"
   kubernetes_cluster_id = module.aks_cluster.id
@@ -311,6 +395,12 @@ module "node_pool" {
   depends_on                   = [module.routetable]
 }
 
+
+# Module for creating an Azure Key Vault
+# This module is responsible for creating a Key Vault in Azure. 
+# Azure Key Vault is a service for securely storing and accessing secrets. 
+# A secret is anything that you want to tightly control access to, such as API keys, passwords, or certificates. 
+# Key Vault service can store and manage these secrets.
 module "key_vault" {
   source                          = "./modules/key_vault"
   name                            = "${var.key_vault_name}${random_string.resource_suffix.result}"
@@ -330,6 +420,11 @@ module "key_vault" {
   log_analytics_workspace_id      = module.log_analytics_workspace.id
 }
 
+
+# Module for creating a Private DNS Zone for Azure Container Registry (ACR)
+# This module is responsible for creating a private DNS zone in Azure. 
+# A private DNS zone provides name resolution for virtual machines within a virtual network and between virtual networks. 
+# Additionally, you can configure zones names to match the private domain, and even split DNS scenarios are possible.
 module "acr_private_dns_zone" {
   source                       = "./modules/private_dns_zone"
   name                         = "privatelink.azurecr.io"
@@ -346,6 +441,11 @@ module "acr_private_dns_zone" {
   }
 }
 
+
+# Module for creating a Private DNS Zone for Azure Key Vault
+# This module is responsible for creating a private DNS zone for Azure Key Vault in Azure. 
+# A private DNS zone provides name resolution for virtual machines within a virtual network and between virtual networks. 
+# Additionally, you can configure zones names to match the private domain, and even split DNS scenarios are possible.
 module "key_vault_private_dns_zone" {
   source                       = "./modules/private_dns_zone"
   name                         = "privatelink.vaultcore.azure.net"
@@ -362,22 +462,13 @@ module "key_vault_private_dns_zone" {
   }
 }
 
-module "blob_private_dns_zone" {
-  source                       = "./modules/private_dns_zone"
-  name                         = "privatelink.blob.core.windows.net"
-  resource_group_name          = azurerm_resource_group.spoke_rg.name
-  virtual_networks_to_link     = {
-    (module.hub_network.name) = {
-      subscription_id = data.azurerm_client_config.current.subscription_id
-      resource_group_name = azurerm_resource_group.hub_rg.name
-    }
-    (module.aks_network.name) = {
-      subscription_id = data.azurerm_client_config.current.subscription_id
-      resource_group_name = azurerm_resource_group.spoke_rg.name
-    }
-  }
-}
 
+# Module for creating a Private Endpoint for Azure Container Registry (ACR)
+# This module is responsible for creating a private endpoint in Azure. 
+# A private endpoint is a network interface that connects you privately and securely to a service powered by Azure Private Link. 
+# Private Endpoint uses a private IP address from your VNet, effectively bringing the service into your VNet. 
+# All traffic to the service can be routed through the private endpoint, so no gateways, NAT devices, 
+# ExpressRoute or VPN connections, or public IP addresses are needed.
 module "acr_private_endpoint" {
   source                         = "./modules/private_endpoint"
   name                           = "${module.container_registry.name}PrivateEndpoint"
@@ -392,6 +483,13 @@ module "acr_private_endpoint" {
   private_dns_zone_group_ids     = [module.acr_private_dns_zone.id]
 }
 
+
+# Module for creating a Private Endpoint for Azure Key Vault
+# This module is responsible for creating a private endpoint for Azure Key Vault in Azure. 
+# A private endpoint is a network interface that connects you privately and securely to a service powered by Azure Private Link. 
+# Private Endpoint uses a private IP address from your VNet, effectively bringing the service into your VNet. 
+# All traffic to the service can be routed through the private endpoint, so no gateways, NAT devices, 
+# ExpressRoute or VPN connections, or public IP addresses are needed.
 module "key_vault_private_endpoint" {
   source                         = "./modules/private_endpoint"
   name                           = "${title(module.key_vault.name)}PrivateEndpoint"
