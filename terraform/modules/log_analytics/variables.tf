@@ -1,43 +1,71 @@
+// The 'variable' block defines an input variable
 variable "resource_group_name" {
-  description = "(Required) Specifies the resource group name"
-  type = string
+    // The 'description' attribute provides a description of the variable
+    description = "(Required) Specifies the resource group name"
+    // The 'type' attribute specifies the type of the variable
+    type = string
 }
 
+// The 'variable' block defines an input variable
 variable "location" {
-  description = "(Required) Specifies the location of the log analytics workspace"
-  type = string
+    // The 'description' attribute provides a description of the variable
+    description = "(Required) Specifies the location of the log analytics workspace"
+    // The 'type' attribute specifies the type of the variable
+    type = string
 }
 
+// The 'variable' block defines an input variable
 variable "name" {
-  description = "(Required) Specifies the name of the log analytics workspace"
-  type = string
+    // The 'description' attribute provides a description of the variable
+    description = "(Required) Specifies the name of the log analytics workspace"
+    // The 'type' attribute specifies the type of the variable
+    type = string
 }
 
+// The 'variable' block defines an input variable
 variable "sku" {
-  description = "(Optional) Specifies the sku of the log analytics workspace"
-  type = string
-  default = "PerGB2018"
-  
-  validation {
-    condition = contains(["Free", "Standalone", "PerNode", "PerGB2018"], var.sku)
-    error_message = "The log analytics sku is incorrect."
-  }
+    // The 'description' attribute provides a description of the variable
+    description = "(Optional) Specifies the sku of the log analytics workspace"
+    // The 'type' attribute specifies the type of the variable
+    type = string
+    // The 'default' attribute specifies the default value of the variable
+    default = "PerGB2018"
+    
+    // The 'validation' block is used to define validation rules for the variable
+    validation {
+        // The 'condition' attribute specifies the condition that must be true for the variable to be valid
+        condition = contains(["Free", "Standalone", "PerNode", "PerGB2018"], var.sku)
+        // The 'error_message' attribute specifies the error message to display if the condition is false
+        error_message = "The log analytics sku is incorrect."
+    }
 }
 
+// The 'variable' block defines an input variable
 variable "solution_plan_map" {
-  description = "(Optional) Specifies the map structure containing the list of solutions to be enabled."
-  type        = map(any)
-  default     = {}
+    // The 'description' attribute provides a description of the variable
+    description = "(Optional) Specifies the map structure containing the list of solutions to be enabled."
+    // The 'type' attribute specifies the type of the variable
+    type        = map(any)
+    // The 'default' attribute specifies the default value of the variable
+    default     = {}
 }
 
+// The 'variable' block defines an input variable
 variable "tags" {
-  description = "(Optional) Specifies the tags of the log analytics workspace"
-  type        = map(any)
-  default     = {}
+    // The 'description' attribute provides a description of the variable
+    description = "(Optional) Specifies the tags of the log analytics workspace"
+    // The 'type' attribute specifies the type of the variable
+    type        = map(any)
+    // The 'default' attribute specifies the default value of the variable
+    default     = {}
 }
 
+// The 'variable' block defines an input variable
 variable "retention_in_days" {
-  description = " (Optional) Specifies the workspace data retention in days. Possible values are either 7 (Free Tier only) or range between 30 and 730."
-  type        = number
-  default     = 30
+    // The 'description' attribute provides a description of the variable
+    description = " (Optional) Specifies the workspace data retention in days. Possible values are either 7 (Free Tier only) or range between 30 and 730."
+    // The 'type' attribute specifies the type of the variable
+    type        = number
+    // The 'default' attribute specifies the default value of the variable
+    default     = 30
 }
