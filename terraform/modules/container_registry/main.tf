@@ -15,8 +15,8 @@ resource "azurerm_container_registry" "acr" {
   resource_group_name      = var.resource_group_name // Specifies the resource group in which to create the ACR.
   location                 = var.location       // Specifies the location in which to create the ACR.
   sku                      = var.sku            // Specifies the SKU of the ACR.
-  admin_enabled            = var.admin_enabled // Specifies whether the admin account is enabled.
-  tags                     = var.tags          // Specifies the tags to associate with the ACR.
+  admin_enabled            = var.admin_enabled  // Specifies whether the admin account is enabled.
+  tags                     = var.tags           // Specifies the tags to associate with the ACR.
 
   // This block assigns a user-assigned managed identity to the ACR.
   identity {
@@ -31,8 +31,8 @@ resource "azurerm_container_registry" "acr" {
     for_each = var.georeplication_locations // Specifies the locations for geo-replication.
 
     content {
-      location = georeplications.value // Specifies the location for this geo-replication.
-      tags     = var.tags              // Specifies the tags to associate with this geo-replication.
+      location = georeplications.value  // Specifies the location for this geo-replication.
+      tags     = var.tags               // Specifies the tags to associate with this geo-replication.
     }
   }
 
