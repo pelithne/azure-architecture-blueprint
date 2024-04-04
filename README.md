@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services. The entire infrastructure is defined and managed using Terraform.
+This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services, as defined in the AKS Secure Baseline. The entire infrastructure is defined and managed using Terraform.
 
 The primary source of documentation for this repository is the comments within the ````main.tf```` Terraform template located in the ````terraform```` folder. For a more in-depth understanding, please refer to this file.
 
