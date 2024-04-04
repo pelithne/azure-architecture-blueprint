@@ -29,7 +29,7 @@ variable "hub_location" {
 
 variable "spoke_location" {
   description = "Specifies the location for the resource group and all the resources"
-  default     = "westus2"
+  default     = "eastus2"
   type        = string
 }
 
