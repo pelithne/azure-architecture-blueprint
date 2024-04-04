@@ -96,10 +96,7 @@ As mentioned, the templates can be run with all default values. To customize you
 
 `additional_node_pool_vm_size` - The type of VM to use in the User node pool. Default is ````standard_d2as_v5````
 
-`default_node_pool_min_count` - The number of VMs to use in the system node pool. Default is a minimalistic ````1````.
+`default_node_pool_node_count` - The number of VMs to use in the system node pool. Default is a minimalistic ````1````
 
-`additional_node_pool_min_count` - The number of VMs to use in the user node pool. Default is a minimalistic ````1````.
-
-
-
+`additional_node_pool_node_count` - The number of VMs to use in the user node pool. Default is a minimalistic ````1````
 
