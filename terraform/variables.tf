@@ -498,28 +498,6 @@ variable "vm_os_disk_image" {
   }
 }
 
-variable "storage_account_kind" {
-  description = "(Optional) Specifies the account kind of the storage account"
-  default     = "StorageV2"
-  type        = string
-
-   validation {
-    condition = contains(["Storage", "StorageV2"], var.storage_account_kind)
-    error_message = "The account kind of the storage account is invalid."
-  }
-}
-
-variable "storage_account_tier" {
-  description = "(Optional) Specifies the account tier of the storage account"
-  default     = "Standard"
-  type        = string
-
-   validation {
-    condition = contains(["Standard", "Premium"], var.storage_account_tier)
-    error_message = "The account tier of the storage account is invalid."
-  }
-}
-
 variable "acr_name" {
   description = "Specifies the name of the container registry"
   type        = string
@@ -566,17 +544,6 @@ variable "hub_bastion_subnet_address_prefix" {
   description = "Specifies the address prefix of the firewall subnet"
   default     = ["10.0.0.128/26"]
   type        = list(string)
-}
-
-variable "storage_account_replication_type" {
-  description = "(Optional) Specifies the replication type of the storage account"
-  default     = "LRS"
-  type        = string
-
-  validation {
-    condition = contains(["LRS", "ZRS", "GRS", "GZRS", "RA-GRS", "RA-GZRS"], var.storage_account_replication_type)
-    error_message = "The replication type of the storage account is invalid."
-  }
 }
 
 variable "key_vault_name" {
@@ -665,29 +632,6 @@ variable "ssh_public_key" {
   type        = string
   default     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQbMSkHMxzXHcuXAbEQk2ELUj52jLa3yI73jcyIvyay4U65uhtnaResw3uXljsMb1ppbFwCFHC7+cNE1WNAI0+/raMka0SbCnC06sZsE78qaNrq3tw7WdnSGfLAMzJTIIQmwA8MxgI6GMw9Sfv++lr2c7ykO2xQL8bx6MI1XewSuHQlq79hWcNQU62kpZLQdKHsOlOx6weaXZxm/3Sb+Q/vno1fasjo5gha3FViBfGxKDJb/1Fizt9ZqcBPMbeEM+h7WIoU29iZcZG4NPjOGGEEUv4enYEPGRmdhfq5GPw5amCL+SQHFaCT1uRVwKzvwm+3tTc4YOL6PITB7mh/f632fDJprZisS7RAQh4EXqObWdoDIzQyz1py30rXIVe/x5phIs79IAtdtJzxQYRbqGkqUvOUi/ozKlylDHkhrr5gKZFRo0S6CRtqzoosFBU4fMQDCT+q3VJPo2T5yXqEipvbYKakIGDq7xFVHWd1/Ofc+R/xDp63zKnmEO0l3E0s70= peter@surface-laptop"
 }
-/*
-variable "script_storage_account_name" {
-  description = "(Required) Specifies the name of the storage account that contains the custom script."
-  type        = string
-}
-
-variable "script_storage_account_key" {
-  description = "(Required) Specifies the name of the storage account that contains the custom script."
-  type        = string
-}
-
-variable "container_name" {
-  description = "(Required) Specifies the name of the container that contains the custom script."
-  type        = string
-  default     = "scripts"
-}
-
-variable "script_name" {
-  description = "(Required) Specifies the name of the custom script."
-  type        = string
-  default     = "configure-jumpbox-vm.sh"
-}
-*/
 
 variable "keda_enabled" {
   description = "(Optional) Specifies whether KEDA Autoscaler can be used for workloads."
