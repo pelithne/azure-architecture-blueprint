@@ -81,7 +81,7 @@ variable "vm_subnet_address_prefix" {
 
 variable "spoke_vnet_name" {
   description = "Specifies the name of the AKS subnet"
-  default     = "vnet201-nels-lab1-aks"
+  default     = "vnet201-lab1-aks"
   type        = string
 }
 
@@ -93,7 +93,7 @@ variable "spoke_vnet_address_space" {
 
 variable "aks_cluster_name" {
   description = "(Required) Specifies the name of the AKS cluster."
-  default     = "Akspelithne"
+  default     = "aks-cluster"
   type        = string
 }
 
