@@ -45,7 +45,7 @@ The modules used are as follows:
 * `Virtual_network_spoke`: This module creates the spoke VNET, which is used for isolating workloads in a hub-and-spoke architecture.
 
 
-### How to use this terraform repository
+### How to use the terraform templates in this repository
 
 #### Run templates with default values
 
