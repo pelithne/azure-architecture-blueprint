@@ -237,7 +237,7 @@ module "routetable" {
 module "container_registry" {
   source                       = "./modules/container_registry"
   name                         = "${var.acr_name}${random_string.resource_suffix.result}"
-  resource_group_name          = azurerm_resource_group.spoke_rg.name
+  resource_group_name          = azurerm_resource_group.hub_rg.name
   location                     = var.hub_location
   sku                          = var.acr_sku
   admin_enabled                = var.acr_admin_enabled
@@ -414,7 +414,7 @@ module "key_vault" {
   source                          = "./modules/key_vault"
   name                            = "${var.key_vault_name}${random_string.resource_suffix.result}"
   location                        = var.hub_location
-  resource_group_name             = azurerm_resource_group.spoke_rg.name
+  resource_group_name             = azurerm_resource_group.hub_rg.name
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   sku_name                        = var.key_vault_sku_name
   tags                            = var.tags
