@@ -91,3 +91,15 @@ As mentioned, the templates can be run with all default values. To customize you
 `*_subnet_address_prefix` - The IP ranges of the various subnets. Make sure that it aligns with the address prefix of the VNET in which the subnet is located.
 
 `aks_cluster_name` - The name of the AKS cluster. Default is ````aks-cluster````
+
+`default_node_pool_vm_size` - The type of VM to use in the System node pool. Default is ````standard_d2as_v5````
+
+`additional_node_pool_vm_size` - The type of VM to use in the User node pool. Default is ````standard_d2as_v5````
+
+`default_node_pool_min_count` - The number of VMs to use in the system node pool. Default is a minimalistic ````1````.
+
+`additional_node_pool_min_count` - The number of VMs to use in the user node pool. Default is a minimalistic ````1````.
+
+
+
+
