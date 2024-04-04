@@ -82,7 +82,7 @@ As mentioned, the templates can be run with all default values. To customize you
 
 `hub_vnet_name` - The name of the hub VNET. Default is ````vnet200-lab1-mgmt````
 
-`spoke_vnet_name` - The name of the spoke VNET. Default is ````vnet201-lab1-aks```
+`spoke_vnet_name` - The name of the spoke VNET. Default is ````vnet201-lab1-aks````
 
 `hub_vnet_address_space` - The IP range of the hub VNET. Default range is ````10.0.0.0/22````
 
