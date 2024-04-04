@@ -89,3 +89,5 @@ As mentioned, the templates can be run with all default values. To customize you
 `spoke_vnet_address_space` - The IP range of the hub VNET. Default range is ````10.1.0.0/20````
 
 `*_subnet_address_prefix` - The IP ranges of the various subnets. Make sure that it aligns with the address prefix of the VNET in which the subnet is located.
+
+`aks_cluster_name` - The name of the AKS cluster. Default is ````aks-cluster````
