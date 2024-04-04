@@ -21,7 +21,7 @@ variable "solution_plan_map" {
   type = map(any)
 }
 
-variable "location" {
+variable "hub_location" {
   description = "Specifies the location for the resource group and all the resources"
   default     = "eastus2"
   type        = string
@@ -47,11 +47,11 @@ variable "spoke_resource_group_name" {
 
 variable "hub_vnet_name" {
   description = "Specifies the name of the hub virtual virtual network"
-  default     = "vnet200-nels-lab1-mgmt"
+  default     = "vnet200-lab1-mgmt"
   type        = string
 }
 
-variable "hub_address_space" {
+variable "hub_vnet_address_space" {
   description = "Specifies the address space of the hub virtual virtual network"
   default     = ["10.0.0.0/22"]
   type        = list(string)
@@ -79,13 +79,13 @@ variable "vm_subnet_address_prefix" {
   type        = list(string)
 }
 
-variable "aks_vnet_name" {
+variable "spoke_vnet_name" {
   description = "Specifies the name of the AKS subnet"
   default     = "vnet201-nels-lab1-aks"
   type        = string
 }
 
-variable "aks_vnet_address_space" {
+variable "spoke_vnet_address_space" {
   description = "Specifies the address prefix of the AKS subnet"
   default     =  ["10.1.0.0/20"]
   type        = list(string)

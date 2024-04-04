@@ -69,3 +69,23 @@ terraform apply "plan.out"
 #### Run templates with edited variables
 
 Anything that needs to be customized in the templates should be done in the main ````variables.tf```` or by providing input variables on the command-line or through a pipeline. The content of ````main.tf```` and the various modules used from ````main.tf```` should not have to be changed.
+
+As mentioned, the templates can be run with all default values. To customize you can edit  ````terraform/variables.tf````. Here are some examples of variables you might want to customize.
+
+`hub_location` - The Azure region into which the *hub* VNET is deployed. Default is ````eastus2````
+
+`spoke_location` - The Azure region into which the *spoke* VNET is deployed. Default is ````westus2````
+
+`hub_resource_group_name` - The Resource group into which the *hub* VNET is deployed. Default name is ````hub-rg````
+
+`spoke_resource_group_name` - The Resource group into which the *spoke* VNET is deployed. Default name is ````spoke-rg````
+
+`hub_vnet_name` - The name of the hub VNET. Default is ````vnet200-lab1-mgmt````
+
+`spoke_vnet_name` - The name of the spoke VNET. Default is ````vnet201-lab1-aks```
+
+`hub_vnet_address_space` - The IP range of the hub VNET. Default range is ````10.0.0.0/22````
+
+`spoke_vnet_address_space` - The IP range of the hub VNET. Default range is ````10.1.0.0/20````
+
+`*_subnet_address_prefix` - The IP ranges of the various subnets. Make sure that it aligns with the address prefix of the VNET in which the subnet is located.

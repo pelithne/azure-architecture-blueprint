@@ -50,7 +50,7 @@ data "azurerm_client_config" "current" {
 # The resource group can include all the resources for the solution, or only those resources that you want to manage as a group.
 resource "azurerm_resource_group" "hub_rg" {
   name     = var.hub_resource_group_name
-  location = var.location
+  location = var.hub_location
   tags     = var.tags
 }
 
@@ -69,7 +69,7 @@ resource "azurerm_resource_group" "spoke_rg" {
 module "log_analytics_workspace" {
   source                           = "./modules/log_analytics"
   name                             = var.log_analytics_workspace_name
-  location                         = var.location
+  location                         = var.hub_location
   resource_group_name              = azurerm_resource_group.hub_rg.name
   solution_plan_map                = var.solution_plan_map
 }
@@ -85,9 +85,9 @@ module "log_analytics_workspace" {
 module "hub_network" {
   source                       = "./modules/virtual_network"
   resource_group_name          = azurerm_resource_group.hub_rg.name
-  location                     = var.location
+  location                     = var.hub_location
   vnet_name                    = var.hub_vnet_name
-  address_space                = var.hub_address_space
+  address_space                = var.hub_vnet_address_space
   tags                         = var.tags
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 
@@ -126,8 +126,8 @@ module "aks_network" {
   source                       = "./modules/virtual_network_spoke"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
   location                     = var.spoke_location
-  vnet_name                    = var.aks_vnet_name
-  address_space                = var.aks_vnet_address_space
+  vnet_name                    = var.spoke_vnet_name
+  address_space                = var.spoke_vnet_address_space
   log_analytics_workspace_id   = module.log_analytics_workspace.id
 
   subnets = [
@@ -175,11 +175,11 @@ module "vnet_peering" {
   vnet_1_name         = var.hub_vnet_name
   vnet_1_id           = module.hub_network.vnet_id
   vnet_1_rg           = azurerm_resource_group.hub_rg.name
-  vnet_2_name         = var.aks_vnet_name
+  vnet_2_name         = var.spoke_vnet_name
   vnet_2_id           = module.aks_network.vnet_id
   vnet_2_rg           = azurerm_resource_group.spoke_rg.name
-  peering_name_1_to_2 = "${var.hub_vnet_name}To${var.aks_vnet_name}"
-  peering_name_2_to_1 = "${var.aks_vnet_name}To${var.hub_vnet_name}"
+  peering_name_1_to_2 = "${var.hub_vnet_name}To${var.spoke_vnet_name}"
+  peering_name_2_to_1 = "${var.spoke_vnet_name}To${var.hub_vnet_name}"
   depends_on          = [module.hub_network, module.aks_network]
 }
 
@@ -194,7 +194,7 @@ module "firewall" {
   resource_group_name          = azurerm_resource_group.hub_rg.name
   zones                        = var.firewall_zones
   threat_intel_mode            = var.firewall_threat_intel_mode
-  location                     = var.location
+  location                     = var.hub_location
   sku_name                     = var.firewall_sku_name 
   sku_tier                     = var.firewall_sku_tier
   pip_name                     = "${var.firewall_name}PublicIp"
@@ -238,7 +238,7 @@ module "container_registry" {
   source                       = "./modules/container_registry"
   name                         = "${var.acr_name}${random_string.resource_suffix.result}"
   resource_group_name          = azurerm_resource_group.spoke_rg.name
-  location                     = var.location
+  location                     = var.hub_location
   sku                          = var.acr_sku
   admin_enabled                = var.acr_admin_enabled
   georeplication_locations     = var.acr_georeplication_locations
@@ -345,7 +345,7 @@ resource "random_string" "resource_suffix" {
 module "bastion_host" {
   source                       = "./modules/bastion_host"
   name                         = var.bastion_host_name
-  location                     = var.location
+  location                     = var.hub_location
   resource_group_name          = azurerm_resource_group.hub_rg.name
   subnet_id                    = module.hub_network.subnet_ids["AzureBastionSubnet"]
   log_analytics_workspace_id   = module.log_analytics_workspace.id
@@ -360,7 +360,7 @@ module "virtual_machine" {
   source                              = "./modules/virtual_machine"
   name                                = var.vm_name
   size                                = var.vm_size
-  location                            = var.location
+  location                            = var.hub_location
   public_ip                           = var.vm_public_ip
   vm_user                             = var.admin_username
   admin_ssh_public_key                = var.ssh_public_key
@@ -413,7 +413,7 @@ module "node_pool" {
 module "key_vault" {
   source                          = "./modules/key_vault"
   name                            = "${var.key_vault_name}${random_string.resource_suffix.result}"
-  location                        = var.location
+  location                        = var.hub_location
   resource_group_name             = azurerm_resource_group.spoke_rg.name
   tenant_id                       = data.azurerm_client_config.current.tenant_id
   sku_name                        = var.key_vault_sku_name
