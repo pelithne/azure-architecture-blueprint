@@ -4,11 +4,11 @@
 
 This repository provides a comprehensive software-defined infrastructure for deploying Kubernetes on Azure using Azure Kubernetes Service (AKS) and other related services. The entire infrastructure is defined and managed using Terraform.
 
-The primary source of documentation for this repository is the comments within the main.tf Terraform template. For a more in-depth understanding, please refer to this file.
+The primary source of documentation for this repository is the comments within the ````main.tf```` Terraform template located in the ````terraform```` folder. For a more in-depth understanding, please refer to this file.
 
-The main.tf template outlines a series of steps to deploy a full-fledged infrastructure. It is associated with the variables.tf file, which houses all the necessary variables for the deployment process.
+The ````main.tf```` template outlines a series of steps to deploy a full-fledged infrastructure. It is associated with the ````variables.tf```` file in the same location, which contains all the necessary variables for the deployment process.
 
-The main.tf file utilizes various modules to deploy each component of the infrastructure. These modules, in turn, have their own variables.tf files. In this context, these can be viewed as placeholders and typically do not require any modifications.
+The ````main.tf```` file utilizes various `modules` to deploy each component of the infrastructure. These modules, in turn, have their own ````variables.tf```` files. In this context, these can be viewed as placeholders and typically do not require any modifications.
 
 The modules used are as follows:
 
