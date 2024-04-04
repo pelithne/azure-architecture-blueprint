@@ -497,7 +497,7 @@ variable "vm_os_disk_image" {
 variable "acr_name" {
   description = "Specifies the name of the container registry"
   type        = string
-  default     = "acrpelithneprivate222"
+  default     = "privateacr"
 }
 
 variable "acr_sku" {
@@ -545,7 +545,7 @@ variable "hub_bastion_subnet_address_prefix" {
 variable "key_vault_name" {
   description = "Specifies the name of the key vault."
   type        = string
-  default     = "kvalipelithne22222"
+  default     = "privatekeyvault"
 }
 
 variable "key_vault_sku_name" {
