@@ -57,15 +57,11 @@ variable "hub_vnet_address_space" {
   type        = list(string)
 }
 
-
-
-
 variable "hub_firewall_subnet_address_prefix" {
   description = "Specifies the address prefix of the firewall subnet"
   default     = ["10.0.0.0/26"]
   type        = list(string)
 }
-
 
 variable "vm_subnet_name" {
   description = "Specifies the name of the jumpbox subnet"

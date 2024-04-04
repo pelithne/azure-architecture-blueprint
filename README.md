@@ -187,3 +187,8 @@ kubernetes     ClusterIP      10.2.0.1     <none>        443/TCP        33m
 12)  Obtain the resource id of the private link, as this is what the consumer will need to have, in order to consume the service. on your right hand side menu click on **Properties** and copy the **id**.
 
 ![Screenshot](images/privatelink3.png)
+
+
+
+### Disclaimer
+The Terraform code provided in this repository is intended for use as a reference only. It is provided ‘as is’ without warranty of any kind, either expressed or implied. We make no guarantees regarding its accuracy, reliability, or completeness. The user is responsible for reviewing, testing, and ensuring the code meets their own security and performance requirements. We accept no liability for any damage or loss resulting from the use of this code.
