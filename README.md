@@ -100,3 +100,90 @@ As mentioned, the templates can be run with all default values. To customize you
 
 `additional_node_pool_node_count` - The number of VMs to use in the user node pool. Default is a minimalistic ````1````
 
+#### Create a private link from AKS
+
+Azure Kubernetes Service (AKS) with Private Link Service (PLS) integration allows users to privately connect to a Private Endpoint (PE) in a VNET in Azure and a Frontend IP Configuration associated with an Azure Load Balancer (ALB). This integration simplifies the process of creating private links to the AKS Load Balancer, enhancing security by enabling private connectivity without data exfiltration risks. This section concentrates on creating the private link.
+
+1) Navigate to the Azure portal at [https://portal.azure.com](https://portal.azure.com) and enter your login credentials.
+2) Once logged in, locate and select your **hub** resource group  where the jumbox is located in.
+3) Within your resource group, find and click on the **Jumpbox VM**.
+4) In the left-hand side menu, under the **Connect** section, select ‘Bastion’.
+5) Enter the **credentials** for the Jumpbox VM and verify that you can log in successfully.
+6)  Once successfully logged in to the jumpbox **install azure cli and kubectl tool** 
+   ````bash
+   # Install Azure CLI
+   curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+   # Install aks cli (kubectl)
+   sudo az aks install-cli
+   # az login
+   # get credential
+   az aks get-credentials -n <AKS CLUSTER NAME> -g <SPOKE RESOURCE GROUP NAME> --admin
+   ````
+7) Create private link.
+
+On the Jumpbox VM create a yaml file.
+
+````bash
+touch test-pls-service.yaml
+vim test-pls-service.yaml
+````
+when you copy to vim, prevent Vim from auto-indenting the text you paste.
+
+````bash
+:set paste
+````
+Press enter.
+
+Paste in the following manifest file which creates a service object named **internal-app**
+
+
+````bash  
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-app
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+	service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "<LOAD BALANCER SUBNET NAME>"
+	service.beta.kubernetes.io/azure-pls-create: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: internal-app
+````
+
+8) Create the service object.
+
+````yaml
+kubectl create -f test-pls-service.yaml
+````
+9) Verify that the service object has an external IP.
+
+Initially the state will be in pending for 1 - 3 minutes.
+````bash
+azureuser@Jumpbox-VM:~$ kubectl get svc
+NAME           TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE
+internal-app   LoadBalancer   10.2.0.118   <pending>     80:30457/TCP   7s
+kubernetes     ClusterIP      10.2.0.1     <none>        443/TCP        30m
+````
+After 1-3 min you should see a private IP (External IP) address generated, as depicted below.
+````bash
+azureuser@Jumpbox-VM:~$ kubectl get svc
+NAME           TYPE           CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE
+internal-app   LoadBalancer   10.2.0.118   10.1.1.4      80:30457/TCP   2m46s
+kubernetes     ClusterIP      10.2.0.1     <none>        443/TCP        33m
+````
+
+10) Verify that the private link is created, in the search field type in Private link and select **Private Link Services** from the drop down menu.
+
+![Screenshot](images/privatelink.png)
+
+11) Validate that your private link connection doesnt have any connection established.
+    
+![Screenshot](images/privatelink2.png)
+
+12)  Obtain the resource id of the private link, as this is what the consumer will need to have, in order to consume the service. on your right hand side menu click on **Properties** and copy the **id**.
+
+![Screenshot](images/privatelink3.png)
